@@ -1,0 +1,73 @@
+#!/bin/sh
+
+NAME="gcsvnc"
+PASS="gcsvnc"
+
+#################################################################################
+# Install everything you want in this function (include DE/WM, apps, tools,...) #
+#################################################################################
+install_packages() {
+    packages="xfce4 dbus-x11"
+
+    sudo apt update
+    sudo apt install -y $packages
+}
+
+##########################################
+# Setup your DE/WM and startup apps here #
+##########################################
+fxstartup="#!/bin/sh
+# Put your autostart programs here.
+
+# Run WM/DE (It is usually placed at the end of the file)
+#openbox-session
+#xfce4-session
+#gnome-session
+#mate-session
+#startlxqt
+#dwm
+#i3
+xfce4-session
+"
+
+if [ ! -f ~/.ztkey ]; then
+    docker run -d --name getztkey --rm --cap-add NET_ADMIN --device /dev/net/tun zerotier/zerotier:latest
+    docker exec getztkey zerotier-idtool generate > ~/.ztkey
+    docker stop getztkey
+fi
+if [ ! -f ~/.ztnet ] || [ -z "$(cat ~/.ztnet)" ]; then
+    printf "Please enter ZeroTier Network ID: "
+    read -r id
+    echo "$id" > ~/.ztnet
+fi
+
+ZNETID="$(cat ~/.ztnet)"
+ZIDPUBLIC="$(sed 's/:/\n/3' ~/.ztkey | head -n1)"
+ZIDSECRET="$(cat ~/.ztkey)"
+
+setup() {
+    docker run \
+        -d \
+        --rm \
+        --net=host \
+        --name "$NAME" \
+        --env ZEROTIER_IDENTITY_PUBLIC="$ZIDPUBLIC" \
+        --env ZEROTIER_IDENTITY_SECRET="$ZIDSECRET" \
+        --cap-add NET_ADMIN \
+        --device /dev/net/tun \
+        zerotier/zerotier:latest \
+        "$ZNETID"
+
+    sudo apt update
+    printf "35\n1\n" | sudo apt install tigervnc-standalone-server tigervnc-xorg-extension -y
+    printf "%s\n%s\nn\n" $PASS $PASS | vncpasswd
+    echo "$fxstartup" > ~/.vnc/xstartup
+    install_packages
+}
+
+case "$1" in
+    "") vncserver -localhost no ;;
+    setup) setup ;;
+    kill) vncserver -kill ":$2" ;;
+    killall) vncserver -kill :* ;;
+esac
