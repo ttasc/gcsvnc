@@ -20,7 +20,7 @@ Move to **gcsvnc** folder and open `gcsvnc` file with your editor, then change:
     ./gcsvnc       # start server
     ```
 - Then [join](https://docs.zerotier.com/cli) your cloud shell to the network you created above
-- Finally, connect to your VNC server by any VNC viewer you want with `server_ip_address:number`. E.g with TigerVNC: `vncviewer 192.168.192.1:1`. Then enter *password `gcsvnc` (default)*
+- Finally, connect to your VNC server by any [VNC viewer](https://wiki.archlinux.org/title/TigerVNC#Connecting_to_vncserver) you want with `server_ip_address:number`. E.g with TigerVNC: `vncviewer 192.168.192.1:1`. Then enter *password `gcsvnc` (default)*
 > **Note:** You can connect many clients to one server by running `gcsvnc` script many times, then connect to server by `server_ip_address:<1,2,3,...>`
 
 ## TODO
