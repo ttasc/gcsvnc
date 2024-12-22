@@ -20,10 +20,19 @@ Move to **gcsvnc** folder and open `gcsvnc` file with your editor, then change:
     ./gcsvnc       # start server
     ```
 - Then [join](https://docs.zerotier.com/cli) your cloud shell to the network you created above
-- Finally, connect to your VNC server by any [VNC viewer](https://wiki.archlinux.org/title/TigerVNC#Connecting_to_vncserver) you want with `server_ip_address:number`. E.g with TigerVNC: `vncviewer 192.168.192.1:1`. Then enter *password `gcsvnc` (default)*
+- Finally, connect to your VNC server by any [VNC viewer](https://wiki.archlinux.org/title/TigerVNC#Connecting_to_vncserver) you want with `server_ip_address:number` (see [here](https://docs.zerotier.com/start#find-the-zerotier-ip-addresses-of-your-devices) to find the ip address). E.g with TigerVNC: `vncviewer 192.168.192.1:1`. Then enter *password `gcsvnc` (default)*
 > **Note:**
 > - You need to [authenticate](https://docs.zerotier.com/start#authorize-your-device) every time you join a device to a ZeroTier Network if the network you created is private.
 > - You can connect many clients to one server by running `mcsv` script many times, then connect to server by `server_ip_address:<1,2,3,...>`
+
+### Options
+```
+gcsvnc [OPTION]      # start VNC server
+OPTION:
+    setup            # setting up the server
+    kill <1,2,3,...> # kill a VNC server running at :<1,2,3,...>
+    killall          # kill all VNC server instances
+```
 
 ## TODO
 - **Make it has sound:** cloud shell doesn't use systemd or any linux init system, so can't start a sound server.
