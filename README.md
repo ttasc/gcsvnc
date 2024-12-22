@@ -23,7 +23,7 @@ Move to **gcsvnc** folder and open `gcsvnc` file with your editor, then change:
 - Finally, connect to your VNC server by any [VNC viewer](https://wiki.archlinux.org/title/TigerVNC#Connecting_to_vncserver) you want with `server_ip_address:number` (see [here](https://docs.zerotier.com/start#find-the-zerotier-ip-addresses-of-your-devices) to find the ip address). E.g with TigerVNC: `vncviewer 192.168.192.1:1`. Then enter *password `gcsvnc` (default)*
 > **Note:**
 > - You need to [authenticate](https://docs.zerotier.com/start#authorize-your-device) every time you join a device to a ZeroTier Network if the network you created is private.
-> - You can connect many clients to one server by running `mcsv` script many times, then connect to server by `server_ip_address:<1,2,3,...>`
+> - You can connect many clients to one server by running `gcsvnc` script many times, then connect to server by `server_ip_address:<1,2,3,...>`
 
 ### Options
 ```
