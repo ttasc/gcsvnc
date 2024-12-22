@@ -32,20 +32,22 @@ exec dbus-run-session xfce4-session
 "
 ##########################################
 
-if [ ! -f ~/.ztkey ]; then
+ztkey="$HOME/.gcsvnc.ztkey"
+ztnet="$HOME/.gcsvnc.ztnet"
+if [ ! -f "$ztkey" ]; then
     docker run -d --name getztkey --rm --cap-add NET_ADMIN --device /dev/net/tun zerotier/zerotier:latest
-    docker exec getztkey zerotier-idtool generate > ~/.ztkey
+    docker exec getztkey zerotier-idtool generate > "$ztkey"
     docker stop getztkey
 fi
-if [ ! -f ~/.ztnet ] || [ -z "$(cat ~/.ztnet)" ]; then
+if [ ! -f "$ztnet" ] || [ -z "$(cat "$ztnet" )" ]; then
     printf "Please enter ZeroTier Network ID: "
     read -r id
-    echo "$id" > ~/.ztnet
+    echo "$id" > "$ztnet"
 fi
 
-ZNETID="$(cat ~/.ztnet)"
-ZIDPUBLIC="$(sed 's/:/\n/3' ~/.ztkey | head -n1)"
-ZIDSECRET="$(cat ~/.ztkey)"
+ZNETID="$(cat "$ztnet" )"
+ZIDPUBLIC="$(sed 's/:/\n/3' "$ztkey" | head -n1)"
+ZIDSECRET="$(cat "$ztkey")"
 
 setup() {
     docker run \
