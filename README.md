@@ -1,4 +1,4 @@
-## HOW TO
+## HOW IT WORK
 
 #### Initial setup
 - Create [ZeroTier Network](https://my.zerotier.com/network/) (you need an account), see [docs](https://docs.zerotier.com/start/)
@@ -23,3 +23,5 @@ Move to **gcsvnc** folder and open `gcsvnc` file with your editor, then change:
 - Finally, connect to your VNC server by any VNC viewer you want with `server_ip_address:number`. E.g with TigerVNC: `vncviewer 192.168.192.1:1`. Then enter *password `gcsvnc` (default)*
 > **Note:** You can connect many clients to one server by running `gcsvnc` script many times, then connect to server by `server_ip_address:<1,2,3,...>`
 
+## TODO
+- **Make it has sound:** cloud shell doesn't use systemd or any linux init system, so can't start a sound server.

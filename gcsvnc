@@ -27,8 +27,10 @@ fxstartup="#!/bin/sh
 #startlxqt
 #dwm
 #i3
-xfce4-session
+dbus-update-activation-environment --all
+exec dbus-run-session xfce4-session
 "
+##########################################
 
 if [ ! -f ~/.ztkey ]; then
     docker run -d --name getztkey --rm --cap-add NET_ADMIN --device /dev/net/tun zerotier/zerotier:latest
@@ -65,9 +67,16 @@ setup() {
     install_packages
 }
 
+ifnotsetup() {
+    if [ ! -x "$(command -v vncserver)" ]; then
+        echo "You must run \`gcsvnc setup\` first!"
+        exit 1
+    fi
+}
+
 case "$1" in
-    "") vncserver -localhost no ;;
-    setup) setup ;;
-    kill) vncserver -kill ":$2" ;;
-    killall) vncserver -kill :* ;;
+    setup)   setup ;;
+    "")      ifnotsetup; vncserver -localhost no ;;
+    kill)    ifnotsetup; vncserver -kill ":$2" ;;
+    killall) ifnotsetup; vncserver -kill :* ;;
 esac
